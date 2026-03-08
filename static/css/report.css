@@ -1,0 +1,571 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f4f6f8, #fff7ef);
+    min-height: 100vh;
+    color: #1f2937;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.nav-logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+
+.nav-right {
+    display: flex;
+    gap: 14px;
+}
+
+.nav-right a {
+    text-decoration: none;
+    color: #7C2D12;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 4px 6px;
+}
+
+.nav-right a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #ee8206;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.nav-right a:hover::after,
+.nav-right a.active::after {
+    left: 0;
+    width: 100%;
+}
+
+.nav-right a:hover {
+    color: #ee8206;
+    transform: scale(1.05);
+}
+
+/* =========================
+   CONTAINER & CARD
+========================= */
+.container {
+    max-width: 950px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.container .card + .card {
+    margin-top: 24px;
+}
+
+.container .card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+/* =========================
+   CARD HEADER
+========================= */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 22px;
+    color: #ee8206;
+    font-weight: 600;
+}
+
+.back-btn {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ee8206;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    transform: translateX(-3px);
+}
+
+/* =========================
+   FILTERS
+========================= */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters label {
+    font-weight: 500;
+}
+
+.filters select,
+.filters input {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #ee8206;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.25);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.filters select:focus,
+.filters input:focus {
+    border-color: #ee8206;
+    box-shadow: 0 2px 8px rgba(238,130,6,0.25);
+}
+
+.filters button {
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filters button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(238,130,6,0.3);
+}
+
+/* =========================
+   SUMMARY BOXES
+========================= */
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.summary p {
+    flex: 1 1 200px;
+    background-color: #fff7ef;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #ee8206;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.2);
+    transition: all 0.3s ease;
+}
+
+.summary p:hover {
+    transform: translateY(-3px);
+    background-color: #ffe4c2;
+}
+
+/* =========================
+   TABLES
+========================= */
+.reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.reports-table th,
+.reports-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.reports-table th {
+    background-color: #f7f7f7;
+    font-weight: 600;
+    color: #444;
+}
+
+.reports-table tbody tr:hover {
+    background-color: #fff4ec;
+}
+
+.reports-table a {
+    color: #ee8206;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.reports-table a:hover {
+    color: #dc6803;
+    text-decoration: underline;
+}
+
+/* =========================
+   DOWNLOAD BUTTONS
+========================= */
+.filters-card {
+    margin-top: 25px;
+}
+
+.filters-card h2 {
+    margin-bottom: 12px;
+    color: #ee8206;
+    font-size: 20px;
+}
+
+.filters-card button {
+    margin-right: 8px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary {
+        flex-direction: column;
+    }
+}
+
+
+
+/* =========================
+   FILTERS & BUTTONS
+========================= */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters label {
+    font-weight: 500;
+}
+
+.filters select,
+.filters input[type="date"] {
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #ee8206;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.25);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.filters select:focus,
+.filters input:focus {
+    border-color: #ee8206;
+    box-shadow: 0 2px 8px rgba(238,130,6,0.25);
+}
+
+.filters button {
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filters button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(238,130,6,0.3);
+}
+
+/* Extra spacing for multiple buttons */
+.filters .btn-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* =========================
+   TABLE
+========================= */
+.reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+.reports-table th,
+.reports-table td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.reports-table th {
+    background-color: #f7f7f7;
+    font-weight: 600;
+    color: #444;
+}
+
+.reports-table tbody tr:hover {
+    background-color: #fff4ec;
+}
+
+.reports-table a {
+    color: #ee8206;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.reports-table a:hover {
+    color: #dc6803;
+    text-decoration: underline;
+}
+
+/* =========================
+   SUMMARY BOXES
+========================= */
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.summary p {
+    flex: 1 1 200px;
+    background-color: #fff7ef;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #ee8206;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.2);
+    transition: all 0.3s ease;
+}
+
+.summary p:hover {
+    transform: translateY(-3px);
+    background-color: #ffe4c2;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary {
+        flex-direction: column;
+    }
+
+    .filters .btn-group {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filters button {
+        width: 100%;
+    }
+}
+/* =========================
+   REPORT LINKS CARD
+========================= */
+.report-links {
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff7f0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.report-links h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #F97316;
+}
+
+.report-link-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.report-link {
+    display: block;
+    flex: 1 1 250px;
+    background-color: #fff;
+    border-left: 4px solid #F97316;
+    border-radius: 8px;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.report-link span {
+    display: block;
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 5px;
+}
+
+.report-link:hover {
+    background-color: #FFF3E0;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   GENERATE REPORTS FORM
+========================= */
+#generate-reports {
+    padding: 20px;
+    margin-top: 30px;
+    background-color: #fef9f5;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+}
+
+#generate-reports h3 {
+    color: #F97316;
+    margin-bottom: 15px;
+}
+
+#generate-reports .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+#generate-reports label {
+    font-weight: 500;
+    color: #333;
+}
+
+#generate-reports select,
+#generate-reports input[type="date"] {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 140px;
+}
+
+#generate-reports .btn {
+    background-color: #F97316;
+    color: #fff;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#generate-reports .btn:hover {
+    background-color: #dc6803;
+}
+
+#generate-reports .btn-outline {
+    background-color: #fff;
+    color: #F97316;
+    border: 1px solid #F97316;
+}
+
+#generate-reports .btn-outline:hover {
+    background-color: #F97316;
+    color: #fff;
+}
+
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+html{
+    scroll-behavior: smooth;
+}

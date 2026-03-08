@@ -1,0 +1,402 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f4f6f8, #fff7ef);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* =========================
+   NAVBAR (STICKY – SAME AS BEFORE)
+========================= */
+/* =========================
+   NAVBAR (EXACT OLD STYLE)
+========================= */
+.navbar {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+
+    /* IMPORTANT: remove fancy stuff */
+    position: relative;   /* NOT sticky */
+    margin: 0;            /* no outer gap */
+    border-radius: 0;     /* sharp edges */
+    animation: none;      /* no slide */
+}
+
+.nav-logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+
+/* NAV LINKS */
+.nav-right a {
+    text-decoration: none;
+    margin-left: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-right a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #ee8206;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.nav-right a:hover::after,
+.nav-right a.active::after {
+    left: 0;
+    width: 100%;
+}
+
+.nav-right a:hover {
+    color: #ee8206;
+    transform: scale(1.05);
+}
+/* =========================
+   CONTAINER & CARD
+========================= */
+.container {
+    max-width: 1100px;
+    margin: 30px auto 50px;
+    padding: 0 15px;
+}
+
+.card {
+    background: #fff;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    transition: 0.3s ease;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+
+/* back button */
+.back-btn {
+    background: #fff4ec;
+    color: #ee8206;
+    padding: 7px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
+
+.back-btn:hover {
+    background: #ee8206;
+    color: #fff;
+    box-shadow: 0 0 0 6px rgba(238,130,6,0.15);
+}
+
+/* =========================
+   CUSTOMER TABLE
+========================= */
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.customer-table th,
+.customer-table td {
+    padding: 12px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.customer-table th {
+    background: #fff4ec;
+    color: #ee8206;
+    font-weight: 600;
+    text-align: left;
+}
+
+.customer-table tr:nth-child(even) {
+    background: #fafafa;
+}
+
+.customer-table tbody tr {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: rowIn 0.45s ease forwards;
+}
+
+.customer-table tbody tr:nth-child(1){animation-delay:.05s}
+.customer-table tbody tr:nth-child(2){animation-delay:.1s}
+.customer-table tbody tr:nth-child(3){animation-delay:.15s}
+.customer-table tbody tr:nth-child(4){animation-delay:.2s}
+.customer-table tbody tr:nth-child(5){animation-delay:.25s}
+
+@keyframes rowIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.customer-table tbody tr:hover {
+    background: #fff7ef;
+    transform: scale(1.005);
+    transition: 0.25s ease;
+}
+
+/* numeric */
+.number-cell {
+    text-align: right;
+}
+
+.pending-amount {
+    text-align: right;
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .nav-right {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .customer-table th,
+    .customer-table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #f3b27a;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #f9f9f9;
+}
+
+
+/* =========================
+   NAV LINKS COLOR ONLY
+========================= */
+
+.nav-right a{
+    color: #7C2D12;              /* dashboard dark text */
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* hover */
+.nav-right a:hover{
+    color: #F97316;              /* primary orange */
+    transform: scale(1.05);
+}
+
+/* active page */
+.nav-right a.active{
+    color: #F97316;
+} 
+
+
+
+/* =========================
+   CUSTOMER NAME LINK
+========================= */
+.customer-table a.link {
+    color: #444;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.customer-table a.link:hover {
+    color: #c45d00;
+    text-decoration: underline;
+}
+
+
+
+.customer-table td a {
+    color: #444;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.customer-table td a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+
+/* =========================
+   SEARCH BAR
+========================= */
+
+.search-box {
+    position: relative;
+    margin-bottom: 18px;
+}
+
+.search-box input {
+    width: 260px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.35s ease;
+    background: #fff;
+}
+
+/* focus animation */
+.search-box input:focus {
+    border-color: #F97316;
+    box-shadow: 0 0 0 4px rgba(249,115,22,0.15);
+    transform: scale(1.02);
+}
+
+/* placeholder style */
+.search-box input::placeholder {
+    color: #999;
+}
+
+/* icon inside search */
+.search-box::before {
+    content: "🔎";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+}
+
+.search-box input {
+    padding-left: 30px;
+}
+
+.customer-table tbody tr {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.customer-table tbody tr.hide {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+.search-btn {
+    padding: 9px 14px;
+    border: none;
+    background: #F97316;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: #ea580c;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+html{
+    scroll-behavior: smooth;
+}

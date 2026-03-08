@@ -1,0 +1,20 @@
+<svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="400" height="250" rx="20" fill="#f4f6f8"></rect>
+
+  <!-- Bill paper -->
+  <rect x="140" y="40" width="120" height="170" rx="10" fill="#ffffff" stroke="#ee8206" stroke-width="3"></rect>
+
+  <!-- Bill lines -->
+  <line x1="155" y1="80" x2="245" y2="80" stroke="#ccc" stroke-width="3"></line>
+  <line x1="155" y1="105" x2="245" y2="105" stroke="#ccc" stroke-width="3"></line>
+  <line x1="155" y1="130" x2="245" y2="130" stroke="#ccc" stroke-width="3"></line>
+
+  <!-- Rupee -->
+  <text x="200" y="170" text-anchor="middle" font-size="36" fill="#ee8206" font-family="Poppins">₹</text>
+
+  <!-- Caption -->
+  <text x="200" y="225" text-anchor="middle" font-size="16" fill="#555" font-family="Poppins">
+    Digital Billing Made Easy
+  </text>
+</svg>

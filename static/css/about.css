@@ -1,0 +1,290 @@
+:root{
+    --primary:#F97316;
+    --bg:#FFF7ED;
+    --dark:#7C2D12;
+}
+
+/* ===== General ===== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg);
+    color: var(--dark);
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+/* ===== Container + Card ===== */
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.card {
+    background: #fff;
+    padding: 30px 35px;
+    border-radius: 14px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+/* ===== Animations ===== */
+.fade-slide {
+    opacity: 0;
+    transform: translateY(25px);
+    animation: fadeSlide 0.8s forwards;
+}
+
+.fade-slide.delay-1{animation-delay:.2s}
+.fade-slide.delay-2{animation-delay:.4s}
+.fade-slide.delay-3{animation-delay:.6s}
+.fade-slide.delay-4{animation-delay:.8s}
+.fade-slide.delay-5{animation-delay:1s}
+.fade-slide.delay-6{animation-delay:1.2s}
+.fade-slide.delay-7{animation-delay:1.4s}
+.fade-slide.delay-8{animation-delay:1.6s}
+.fade-slide.delay-9{animation-delay:1.8s}
+.fade-slide.delay-10{animation-delay:2s}
+.fade-slide.delay-11{animation-delay:2.2s}
+.fade-slide.delay-12{animation-delay:2.4s}
+.fade-slide.delay-13{animation-delay:2.6s}
+.fade-slide.delay-14{animation-delay:2.8s}
+.fade-slide.delay-15{animation-delay:3s}
+.fade-slide.delay-16{animation-delay:3.2s}
+
+@keyframes fadeSlide{
+    from{opacity:0;transform:translateY(25px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* ===== Navbar ===== */
+.navbar {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Smaller Logo */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.nav-logo .logo {
+    width: 32px;
+    height: 32px;
+    padding: 5px;
+    background: #FFF7ED;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+/* Nav links */
+.nav-right {
+    display: flex;
+    gap: 14px;
+}
+
+.nav-right a {
+    text-decoration: none;
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-right a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: .3s;
+}
+
+.nav-right a:hover::after,
+.nav-right a.active::after {
+    left: 0;
+    width: 100%;
+}
+
+/* ===== HERO BANNER (FIXED) ===== */
+.hero {
+    max-width: 900px;
+    margin: 25px auto 10px;
+    padding: 0 20px;
+}
+
+.hero img {
+    width: 100%;
+    height: 200px;          /* ✅ smaller banner */
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+    display: block;         /* ✅ IMPORTANT */
+    animation: bannerFade 1s ease forwards;
+}
+
+@keyframes bannerFade{
+    from{opacity:0;transform:scale(1.05)}
+    to{opacity:1;transform:scale(1)}
+}
+
+/* ===== Features ===== */
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.feature {
+    width: 150px;
+    background: var(--bg);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.feature img {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+/* ===== Contact Card ===== */
+.contact-card {
+    background: var(--primary);
+    color: #fff;
+    padding: 25px 30px;
+    border-radius: 14px;
+    margin-top: 30px;
+}
+
+.contact-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-card ul li {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.contact-card ul li img {
+    filter: brightness(0) invert(1);
+}
+
+/* ===== Footer ===== */
+.footer-note {
+    text-align: center;
+    margin-top: 25px;
+    font-style: italic;
+    color: var(--primary);
+}
+
+
+/* =====================
+   HERO BANNER HOVER
+===================== */
+.hero img {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.hero img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+}
+
+/* =====================
+   KEY FEATURES HOVER
+===================== */
+.feature {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+}
+
+.feature img {
+    transition: transform 0.3s ease;
+}
+
+.feature:hover img {
+    transform: scale(1.2);
+}
+
+/* =====================
+   CONTACT CARD HOVER
+===================== */
+.contact-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.35);
+}
+
+.contact-card ul li {
+    transition: transform 0.3s ease;
+}
+
+.contact-card ul li:hover {
+    transform: translateX(6px);
+}
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+html{
+    scroll-behavior: smooth;
+}

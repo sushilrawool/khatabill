@@ -1,0 +1,425 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f4f6f8, #fff7ef);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* =========================
+   NAVBAR (OLD STYLE + STICKY)
+========================= */
+/* =========================
+   NAVBAR (NORMAL – ADD BILL STYLE)
+========================= */
+.navbar {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+
+    /* IMPORTANT: remove fancy stuff */
+    position: relative;   /* NOT sticky */
+    margin: 0;            /* no outer gap */
+    border-radius: 0;     /* sharp edges */
+    animation: none;      /* no slide */
+}
+
+.nav-logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+
+/* NAV LINKS */
+.nav-right a {
+    text-decoration: none;
+    margin-left: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-right a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #ee8206;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.nav-right a:hover::after,
+.nav-right a.active::after {
+    left: 0;
+    width: 100%;
+}
+
+.nav-right a:hover {
+    color: #ee8206;
+    transform: scale(1.05);
+}
+/* NAV LINKS COLOR ONLY */
+
+.nav-right a{
+    color: #7C2D12;              /* dashboard dark text */
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* hover */
+.nav-right a:hover{
+    color: #F97316;              /* primary orange */
+    transform: scale(1.05);
+}
+
+/* active page */
+.nav-right a.active{
+    color: #F97316;
+}
+
+
+
+/* Logout */
+.logout-btn {
+    background-color: #ee8206;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #d66f05;
+}
+
+/* =========================
+   CONTAINER & CARD
+========================= */
+.container {
+    max-width: 1000px;
+    margin: 30px auto 60px;
+    padding: 0 15px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s forwards;
+}
+
+@keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   CARD HEADER
+========================= */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.card-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+
+/* =========================
+   ADD BUTTON
+========================= */
+.add-btn {
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(238,130,6,0.4);
+}
+
+/* =========================
+   FORM
+========================= */
+.form-group,
+#addProductForm {
+    background-color: #fff7ef;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    box-shadow: 0 6px 16px rgba(238,130,6,0.15);
+    animation: fadeUp 0.5s ease;
+}
+
+.form-group input,
+#addProductForm input,
+#addProductForm select {
+    flex: 1 1 160px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ee8206;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-group input:focus,
+#addProductForm input:focus,
+#addProductForm select:focus {
+    box-shadow: 0 4px 12px rgba(238,130,6,0.35);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btn {
+    background-color: #ee8206;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background-color: #d66f05;
+    transform: translateY(-1px);
+}
+
+.cancel {
+    background-color: #888;
+}
+
+.cancel:hover {
+    background-color: #555;
+}
+
+/* =========================
+   TABLE (Dashboard Feel)
+========================= */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.product-table th {
+    background-color: #fff4ec;
+    color: #ee8206;
+    font-weight: 600;
+}
+
+.product-table tbody tr {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rowFade 0.4s forwards;
+}
+
+.product-table tbody tr:nth-child(1){animation-delay:.1s}
+.product-table tbody tr:nth-child(2){animation-delay:.2s}
+.product-table tbody tr:nth-child(3){animation-delay:.3s}
+
+@keyframes rowFade {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.product-table tbody tr:hover {
+    background: linear-gradient(90deg, #fff7ef, #ffe8d2);
+    transform: scale(1.01);
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.edit-btn,
+.delete-btn {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* 🔥 EDIT = DASHBOARD ORANGE */
+.edit-btn {
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    color: #fff;
+}
+
+.edit-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 14px rgba(238,130,6,0.4);
+}
+
+/* DELETE */
+.delete-btn {
+    background-color: #dc2626;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background-color: #b91c1c;
+    transform: translateY(-2px);
+}
+
+.product-table td button {
+    margin: 0 3px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .nav-right {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .form-group,
+    #addProductForm {
+        flex-direction: column;
+    }
+
+    .product-table th,
+    .product-table td {
+        font-size: 13px;
+        padding: 8px;
+    }
+}
+
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-box{
+    margin-bottom:20px;
+    position:relative;
+}
+
+.search-box input{
+    width:260px;
+    padding:10px 14px 10px 36px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:14px;
+    outline:none;
+    background:#fff;
+    transition:all 0.35s ease;
+}
+
+/* search icon */
+.search-box::before{
+    content:"🔎";
+    position:absolute;
+    left:10px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+/* focus animation */
+.search-box input:focus{
+    border-color:#F97316;
+    box-shadow:0 0 0 4px rgba(249,115,22,0.15);
+    transform:scale(1.02);
+}
+
+
+html{
+    scroll-behavior: smooth;
+}

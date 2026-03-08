@@ -1,0 +1,277 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(135deg, #f4f6f8, #fff7ef);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    height: 64px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #7C2D12;
+    padding: 4px 6px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: #ee8206;
+    transition: all 0.3s ease;
+}
+
+.nav-links li a:hover::after {
+    left: 0;
+    width: 100%;
+}
+
+.nav-links li a:hover {
+    color: #ee8206;
+}
+
+/* =========================
+   CONTAINER & CARD
+========================= */
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 15px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.card {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.14);
+    animation: slideUp 0.5s ease forwards;
+}
+
+.card h2 {
+    font-size: 22px;
+    color: #ee8206;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.card h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 60px;
+    height: 3px;
+    background: #ee8206;
+    border-radius: 2px;
+}
+
+/* =========================
+   TABLE
+========================= */
+.customer-bills {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.customer-bills th,
+.customer-bills td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.customer-bills th {
+    background: #f7f7f7;
+    font-weight: 500;
+    color: #444;
+}
+
+.customer-bills tbody tr:hover {
+    background: #fff7ef;
+}
+
+.customer-bills select, 
+.customer-bills input[type="number"] {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.customer-bills select:focus, 
+.customer-bills input[type="number"]:focus {
+    border-color: #ee8206;
+    box-shadow: 0 0 0 2px rgba(238,130,6,0.2);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btn {
+    margin-top: 20px;
+    padding: 12px 22px;
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(238,130,6,0.35);
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .card { padding: 20px; }
+    .customer-bills th,
+    .customer-bills td { font-size: 13px; }
+}
+
+.customer-bills .remove-btn {
+    background: #ff4d4d;
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.customer-bills .remove-btn:hover {
+    background: #ff1a1a;
+    transform: scale(1.1);
+}
+
+/* =========================
+   REMOVE ROW BUTTON
+========================= */
+/* =========================
+   REMOVE ROW BUTTON - CIRCLE FIX
+========================= */
+.product-table td .remove-btn {
+    background-color: #ff6b6b;   /* red background */
+    color: #fff;                  /* white cross */
+    border: none;
+    border-radius: 50%;           /* circle */
+    width: 32px;                  /* width = height for perfect circle */
+    height: 32px;                 /* width = height */
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;                   /* remove any extra padding */
+    line-height: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.product-table td .remove-btn:hover {
+    background-color: #ee4c4c;    
+    transform: scale(1.2) rotate(15deg);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.product-table td .remove-btn:active {
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}

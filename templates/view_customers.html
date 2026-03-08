@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | View Customers</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/view_customers.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left"><div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div></div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('add_bill') }}" class="{% if request.path == '/add_bill' %}active{% endif %}">Add Bill</a>
+        <a href="{{ url_for('add_customer') }}" class="{% if request.path == '/add_customer' %}active{% endif %}">Add Customer</a>
+        <a href="{{ url_for('view_customers') }}" class="{% if request.path == '/view_customers' %}active{% endif %}">View Customers</a>
+        <a href="{{ url_for('products') }}" class="{% if request.path == '/products' %}active{% endif %}">Products</a>
+        <a href="{{ url_for('pending_bills') }}" class="{% if request.path == '/pending_bills' %}active{% endif %}">Pending Bills</a>
+        <a href="{{ url_for('reports') }}" class="{% if request.path == '/reports' %}active{% endif %}">Reports</a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">About Us</a>
+        <a href="{{ url_for('gallery') }}" class="{% if request.path == '/gallery' %}active{% endif %}">Gallery</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ url_for('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+            <h2>All Customers</h2>
+        </div>
+      <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search customer...">
+</div>
+        <table class="customer-table" id="customerTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Total Bills</th>
+                    <th>Pending Bills</th>
+                    <th>Pending Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for customer in customers %}
+                <tr {% if updated_id and customer.id == updated_id %}class="highlight"{% endif %}>
+                    <td>{{ customer.id }}</td>
+                    <td><a class="link" href="{{ url_for('customer_detail', customer_id=customer.id) }}">{{ customer.name }}</a></td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td class="number-cell">{{ customer.total_bills }}</td>
+                    <td class="number-cell">
+    {% if customer.pending_bills > 0 %}
+        <span class="pending-badge">{{ customer.pending_bills }}</span>
+    {% else %}
+        0
+    {% endif %}
+</td>
+                    <td class="pending-amount">₹ {{ customer.pending_amount }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" style="text-align:center;">No customers found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function logout() {
+    window.location.href = "{{ url_for('logout') }}";
+}
+</script>
+
+</body>
+</html>
+<script>
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup", function () {
+
+    let filter = searchInput.value.toLowerCase();
+    let table = document.getElementById("customerTable");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let nameCell = rows[i].getElementsByTagName("td")[1];
+
+        if (nameCell) {
+
+            let text = nameCell.textContent.toLowerCase();
+
+            if (text.includes(filter)) {
+                rows[i].style.display = "";
+            } else {
+                rows[i].style.display = "none";
+            }
+
+        }
+    }
+});
+
+</script>

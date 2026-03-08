@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | Pending Bills</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pending-bills.css') }}">
+</head>
+<body><nav class="navbar">
+    <div class="nav-left"><div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div></div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('add_bill') }}" class="{% if request.path == '/add_bill' %}active{% endif %}">Add Bill</a>
+        <a href="{{ url_for('add_customer') }}" class="{% if request.path == '/add_customer' %}active{% endif %}">Add Customer</a>
+        <a href="{{ url_for('view_customers') }}" class="{% if request.path == '/view_customers' %}active{% endif %}">View Customers</a>
+        <a href="{{ url_for('products') }}" class="{% if request.path == '/products' %}active{% endif %}">Products</a>
+        <a href="{{ url_for('pending_bills') }}" class="{% if request.path == '/pending_bills' %}active{% endif %}">Pending Bills</a>
+        <a href="{{ url_for('reports') }}" class="{% if request.path == '/reports' %}active{% endif %}">Reports</a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">About Us</a>
+        <a href="{{ url_for('gallery') }}" class="{% if request.path == '/gallery' %}active{% endif %}">Gallery</a>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ url_for('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+            <h2>Pending Bills (Bill-wise)</h2>
+        </div>
+
+        <table class="pending-table">
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Amount (₹)</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+<tbody>
+{% for bill in pending_bills %}
+<tr>
+    <td>{{ bill.id }}</td>
+    <td>{{ bill.customer_name }}</td>
+    <td>{{ bill.created_at.strftime("%d-%m-%Y") }}</td> 
+    <td>{{ bill.created_at.strftime("%I:%M %p") }}</td>
+    <td>{{ bill.total_amount }}</td>
+    <td>{{ bill.status }}</td>
+    <td>
+        <a href="{{ url_for('view_bill', bill_id=bill.id) }}">View</a>
+        {% if bill.status == 'PENDING' %}
+        | <a href="{{ url_for('mark_paid', bill_id=bill.id) }}">Mark Paid</a>
+        {% endif %}
+    </td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="6">No pending bills found</td>
+</tr>
+{% endfor %}
+</tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/pending-bills.js') }}"></script>
+</body>
+</html>

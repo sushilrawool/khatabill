@@ -1,0 +1,568 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f4f6f8, #fff7ef);
+    min-height: 100vh;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.nav-logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+.nav-right {
+    display: flex;
+    gap: 14px; /* spacing between links, adjust as needed */
+}
+
+.nav-right a {
+    text-decoration: none;
+    color: #7C2D12; 
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.3s ease;
+    margin-left: 0; /* remove old margin */
+    padding: 4px 6px; /* optional */
+}
+
+.nav-right a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #ee8206;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.nav-right a:hover::after,
+.nav-right a.active::after {
+    left: 0;
+    width: 100%;
+}
+
+.nav-right a:hover {
+    color: #ee8206;
+    transform: scale(1.05);
+}
+
+
+
+
+/* =========================
+   CONTAINER & CARD
+========================= */
+.container {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   CARD HEADER
+========================= */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 22px;
+    color: #ee8206;
+    font-weight: 600;
+}
+
+.back-btn {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ee8206;
+}
+
+/* =========================
+   FORM GROUP
+========================= */
+.form-group {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #ee8206;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.25);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #ee8206;
+    box-shadow: 0 2px 8px rgba(238,130,6,0.25);
+}
+
+/* =========================
+   SUGGESTIONS DROPDOWN
+========================= */
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.suggestions.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.suggestions div {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s ease;
+}
+
+.suggestions div:hover {
+    background-color: #fff4ec;
+    color: #ee8206;
+}
+
+/* =========================
+   PRODUCT TABLE
+========================= */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+.product-table th,
+.product-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.product-table th {
+    background-color: #f7f7f7;
+    font-weight: 500;
+    color: #444;
+}
+
+/* Input inside table cells */
+.product-table input[type="text"],
+.product-table input[type="number"] {
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ee8206;
+    box-shadow: 0 2px 6px rgba(238,130,6,0.15);
+    outline: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.product-table input[type="text"]:focus,
+.product-table input[type="number"]:focus {
+    border-color: #ee8206;
+    box-shadow: 0 2px 8px rgba(238,130,6,0.3);
+}
+
+/* Price / Total td highlight */
+.product-table td.price,
+.product-table td.row-total {
+    background-color: #fff7ef;
+    font-weight: 600;
+    color: #ee8206;
+    text-align: right;
+    padding-right: 12px;
+    border-radius: 6px;
+}
+
+/* Delete row button */
+.product-table td button {
+    background: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.product-table td button:hover {
+    background: #ee4c4c;
+    transform: scale(1.1);
+}
+
+/* =========================
+   ADD ROW BUTTON
+========================= */
+.add-row {
+    background: #ff9a3c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.add-row:hover {
+    background: #ee8206;
+}
+
+/* =========================
+   TOTAL BOX
+========================= */
+.total-box {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background-color: #fff7ef;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.2);
+    text-align: right;
+    color: #ee8206;
+    transition: all 0.3s ease;
+}
+
+/* =========================
+   SAVE BUTTON
+========================= */
+.btn {
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    border: none;
+    color: #fff;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 12px rgba(238,130,6,0.3);
+}
+
+/* =========================
+   ROW ANIMATION
+========================= */
+.product-table tbody tr.new-row {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.4s ease;
+}
+
+.product-table tbody tr.new-row.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+
+/* =========================
+   CUSTOMER SEARCH FIX
+========================= */
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 180px; /* उंची वाढवली */
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 100;
+    opacity: 1 !important; /* default visible */
+    transform: translateY(0) !important;
+}
+
+.suggestions div {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s ease;
+}
+
+.suggestions div:hover {
+    background-color: #fff4ec;
+    color: #ee8206;
+}
+
+
+/* ===============================
+   PAYMENT STATUS SELECT
+================================ */
+
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+    background-color: #fff;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%239ca3af' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 18px;
+}
+
+/* Hover */
+.form-group select:hover {
+    border-color: #f97316;
+}
+
+/* Focus */
+.form-group select:focus {
+    outline: none;
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25);
+}
+
+/* ===============================
+   STATUS COLORS (DYNAMIC)
+================================ */
+
+select.status-paid {
+    background-color: #ecfdf5;
+    border-color: #10b981;
+    color: #065f46;
+    font-weight: 600;
+}
+
+select.status-pending {
+    background-color: #fff7ed;
+    border-color: #f97316;
+    color: #7c2d12;
+    font-weight: 600;
+}
+
+/* ===============================
+   SMOOTH ANIMATION
+================================ */
+
+select.status-paid,
+select.status-pending {
+    animation: pop 0.25s ease-in-out;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+/* ===============================
+   PAYMENT STATUS – OPEN EFFECT
+================================ */
+
+.form-group {
+    position: relative;
+}
+
+/* Open (click) animation */
+.form-group select:focus {
+    animation: selectOpen 0.25s ease;
+}
+
+@keyframes selectOpen {
+    0% {
+        transform: scale(0.97);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ===============================
+   OPTION STYLING (LIMITED BUT CLEAN)
+================================ */
+
+/* Works in Chrome / Edge */
+select option {
+    padding: 12px;
+    font-weight: 500;
+}
+
+/* Paid option */
+select option[value="PAID"] {
+    background-color: #ecfdf5;
+    color: #065f46;
+}
+
+/* Pending option */
+select option[value="PENDING"] {
+    background-color: #fff7ed;
+    color: #7c2d12;
+}
+
+/* ===============================
+   CLICK RIPPLE FEEL
+================================ */
+
+.select-ripple {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    pointer-events: none;
+    animation: ripple 0.4s ease;
+    background: rgba(249,115,22,0.15);
+}
+
+@keyframes ripple {
+    from {
+        opacity: 0.6;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+}
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+html{
+    scroll-behavior: smooth;
+}
+.customer-bills .remove-btn {
+    background: #ff4d4d;
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.customer-bills .remove-btn:hover {
+    background: #ff1a1a;
+    transform: scale(1.1);
+}

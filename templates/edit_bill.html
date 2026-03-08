@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Bill</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_bill.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-logo">
+        <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo">
+        KhataBill
+    </div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('add_bill') }}">Add Bill</a></li>
+        <li><a href="{{ url_for('add_customer') }}">Add Customer</a></li>
+        <li><a href="{{ url_for('view_customers') }}">View Customers</a></li>
+        <li><a href="{{ url_for('products') }}">Products</a></li>
+        <li><a href="{{ url_for('pending_bills') }}">Pending Bills</a></li>
+        <li><a href="{{ url_for('reports') }}">Reports</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <h2>Edit Bill #{{ bill.id }}</h2>
+        <form method="POST" action="{{ url_for('edit_bill', bill_id=bill.id) }}">
+            <table class="customer-bills">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <select name="product_id[]" onchange="setPrice(this)">
+                                <option value="">-- Select Product --</option>
+                                {% for product in products %}
+                                <option value="{{ product.id }}" data-price="{{ product.price }}" {% if product.id == item.product_id %}selected{% endif %}>
+                                    {{ product.product_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><input type="number" name="quantity[]" value="{{ item.quantity }}" min="0" oninput="updateTotal()"></td>
+                        <td><input type="number" name="price[]" value="{{ item.price }}" min="0" step="0.01" oninput="updateTotal()"></td>
+                        <td><button type="button" class="btn remove-btn" onclick="removeRow(this)">&times;</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" style="text-align:right;font-weight:bold;">Total:</td>
+                        <td colspan="2" id="totalAmount">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <button type="button" onclick="addRow()" class="btn">+ Add Product</button>
+            <button type="submit" class="btn">Update Bill</button>
+        </form>
+    </div>
+</div>
+
+<!-- Pass products to JS -->
+<script id="products-data" type="application/json">{{ products|tojson|safe }}</script>
+<script src="{{ url_for('static', filename='js/edit_bill.js') }}"></script>
+
+</body>
+</html>

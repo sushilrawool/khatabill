@@ -1,0 +1,172 @@
+/* Bill Template Styles */
+#billTemplate {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    padding: 20px;
+    width: 700px;
+    margin: 0 auto;
+    border: 2px solid #ee8206;
+    border-radius: 10px;
+    color: #333;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInBill 0.5s forwards; /* fade-in animation */
+}
+
+@keyframes fadeInBill {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#billTemplate h2 {
+    text-align: center;
+    color: #ee8206;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: fadeInTitle 0.5s forwards 0.2s; /* slight delay for staggered effect */
+}
+
+@keyframes fadeInTitle {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#billTemplate p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+#billTemplate table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInTable 0.5s forwards 0.4s; /* table fade-in */
+}
+
+@keyframes fadeInTable {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#billTemplate table th,
+#billTemplate table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+#billTemplate table th {
+    background-color: #f8f8f8;
+    font-weight: 600;
+}
+
+#billTemplate h3 {
+    text-align: right;
+    margin-top: 10px;
+    color: #ee8206;
+    opacity: 0;
+    transform: translateX(20px);
+    animation: fadeInGrandTotal 0.5s forwards 0.6s;
+}
+
+@keyframes fadeInGrandTotal {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+#billTemplate p span {
+    font-weight: 500;
+}
+
+.print-btn {
+    background-color: #ee8206;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease; /* smooth hover transition */
+}
+
+.print-btn:hover {
+    background-color: #d66f05;
+    transform: scale(1.05); /* slight grow on hover */
+    box-shadow: 0 4px 12px rgba(238,130,6,0.3); /* glow effect */
+}
+
+
+/* =========================
+   NAV LINKS COLOR ONLY
+========================= */
+
+.nav-right a{
+    color: #7C2D12;              /* dashboard dark text */
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* hover */
+.nav-right a:hover{
+    color: #F97316;              /* primary orange */
+    transform: scale(1.05);
+}
+
+/* active page */
+.nav-right a.active{
+    color: #F97316;
+}
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+html{
+    scroll-behavior: smooth;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Customer - KhataBill</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/static/css/add_customer.css">
+</head>
+<body>
+    <!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-left"><div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div></div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('add_bill') }}" class="{% if request.path == '/add_bill' %}active{% endif %}">Add Bill</a>
+        <a href="{{ url_for('add_customer') }}" class="{% if request.path == '/add_customer' %}active{% endif %}">Add Customer</a>
+        <a href="{{ url_for('view_customers') }}" class="{% if request.path == '/view_customers' %}active{% endif %}">View Customers</a>
+        <a href="{{ url_for('products') }}" class="{% if request.path == '/products' %}active{% endif %}">Products</a>
+        <a href="{{ url_for('pending_bills') }}" class="{% if request.path == '/pending_bills' %}active{% endif %}">Pending Bills</a>
+        <a href="{{ url_for('reports') }}" class="{% if request.path == '/reports' %}active{% endif %}">Reports</a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">About Us</a>
+        <a href="{{ url_for('gallery') }}" class="{% if request.path == '/gallery' %}active{% endif %}">Gallery</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Add Customer</h2>
+            <a href="{{ url_for('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+        </div>
+
+
+
+
+        <!-- ================= Flash Messages ================= -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+        <!-- FORM connected to Flask backend -->
+        <form id="addCustomerForm" method="POST" action="{{ url_for('add_customer') }}">
+            <div class="form-group">
+                <label for="name">Customer Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter customer name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email (Optional)</label>
+                <input type="email" id="email" name="email" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="address">Address (Optional)</label>
+                <textarea id="address" name="address" placeholder="Enter address"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="opening_balance">Opening Balance</label>
+                <input type="number" id="opening_balance" name="opening_balance" placeholder="0" value="0">
+            </div>
+            <button type="submit" class="btn">Add Customer</button>
+        </form>
+    </div>
+</div>
+
+<!-- External JS -->
+<script src="/static/js/add_customer.js"></script>
+
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const flash = document.querySelector('.flash');
+    if(flash) {
+        setTimeout(() => {
+            flash.style.opacity = '0';
+            flash.style.transform = 'translateY(-10px)';
+        }, 2500); // 2.5 sec visible
+    }
+});
+</script>
+</body>
+</html>

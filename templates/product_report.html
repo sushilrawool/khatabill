@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | Product Report</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div>
+    </div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('reports') }}">Reports</a>
+        <a href="{{ url_for('product_report') }}" class="active">Product Report</a>
+        <a href="{{ url_for('customer_product_report') }}">Customer - Wise Product Report</a>
+    </div>
+</nav>
+
+<div class="container">
+
+<!-- DOWNLOAD CARD / FILTER -->
+<div class="card">
+    <div class="card-header">
+        <a href="{{ url_for('dashboard') }}" class="back-btn">← Back</a>
+        <h2>Product Report</h2>
+    </div>
+
+    <div class="filters-card card" style="margin-top:10px;">
+    <h3>Generate & Download Product Report</h3>
+    <form method="get" action="{{ url_for('product_report') }}" class="filters">
+        <label>Product:</label>
+        <select name="product_id">
+            <option value="">All Products</option>
+            {% for prod in products %}
+            <option value="{{ prod.id }}" {% if request.args.get('product_id') == prod.id|string %}selected{% endif %}>
+                {{ prod.product_name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label>From:</label>
+        <input type="date" name="from_date" value="{{ request.args.get('from_date','') }}">
+        <label>To:</label>
+        <input type="date" name="to_date" value="{{ request.args.get('to_date','') }}">
+
+        <button type="submit" class="btn">Apply Filter</button>
+        <button type="submit" name="download" value="pdf" class="btn btn-outline">Download PDF</button>
+        <button type="submit" name="download" value="excel" class="btn btn-outline">Download Excel</button>
+    </form>
+</div>
+
+<div class="card" id="reportResult">
+    <h3>Product Sales Details</h3>
+    {% if records %}
+    <table class="reports-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Unit</th>
+                <th>Price</th>
+                <th>Qty Sold</th>
+                <th>Total Sale</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td>{{ r.product_name }}</td>
+                <td>{{ r.unit }}</td>
+                <td>{{ r.price }}</td>
+                <td>{{ r.total_quantity }}</td>
+                <td>{{ r.total_sale }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="padding:10px;">No records found for selected filter.</p>
+    {% endif %}
+</div>
+</div>
+
+</body>
+</html>

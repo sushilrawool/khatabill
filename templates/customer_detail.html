@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | Customer Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/customer_detail.css') }}">
+<script src="{{ url_for('static', filename='js/customer_detail.js') }}" defer></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div>
+
+    <ul class="nav-links">
+       <li> <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a></li>
+        <li><a href="{{ url_for('add_bill') }}">Add Bill</a></li>
+        <li><a href="{{ url_for('add_customer') }}">Add Customer</a></li>
+        <li><a href="{{ url_for('view_customers') }}">View Customers</a></li>
+        <li><a href="{{ url_for('products') }}">Products</a></li>
+        <li><a href="{{ url_for('pending_bills') }}">Pending Bills</a></li>
+        <li><a href="{{ url_for('reports') }}">Reports</a></li>
+        <li><a href="{{ url_for('about') }}">About Us</a></li>
+        <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
+    </ul>
+
+  
+</nav>
+
+
+<div class="container">
+    <div class="card">
+
+        <!-- Header with Edit/Delete -->
+        <div class="card-header">
+            <a href="{{ url_for('view_customers') }}" class="back-btn">← Back to Customers</a>
+            <h2>{{ customer.name }} - Bills</h2>
+            <div class="customer-actions">
+                <!-- Edit button using data-attributes -->
+                <button class="edit-btn"
+                    data-id="{{ customer.id }}"
+                    data-name="{{ customer.name|escape }}"
+                    data-phone="{{ customer.phone|escape }}"
+                    data-email="{{ customer.email|escape }}">
+                    Edit
+                </button>
+
+                <form method="POST" action="{{ url_for('delete_customer', customer_id=customer.id) }}" style="display:inline;">
+                    <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this customer?')">Delete</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Customer Form -->
+        <div class="form-group" id="editCustomerForm" style="display:none;">
+            <form method="POST" action="{{ url_for('add_update_customer') }}" id="customerForm">
+                <input type="hidden" name="customer_id" id="customer_id">
+                <input type="text" name="customer_name" id="customer_name" placeholder="Customer Name" required>
+                <input type="text" name="phone" id="phone" placeholder="Phone" required>
+                <input type="email" name="email" id="email" placeholder="Email">
+                <button type="submit" class="btn" id="formBtn">Update Customer</button>
+                <button type="button" class="btn cancel" id="cancelBtn">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Customer Bills -->
+        {% if bills %}
+        <table class="customer-bills">
+    <thead>
+        <tr>
+            <th>Bill ID</th>
+            <th>Bill Date</th>
+            <th>Time</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bill in bills %}
+        <tr>
+            <td>{{ bill.id }}</td>
+            <td>{{ bill.created_at.strftime("%d-%m-%Y") }}</td>
+            <td>{{ bill.created_at.strftime("%I:%M %p") }}</td>
+            <td>₹ {{ bill.total_amount }}</td>
+            <td class="status {% if bill.status == 'PENDING' %}pending{% else %}paid{% endif %}">
+                {{ bill.status }}
+            </td>
+            <td>
+                {% if bill.status == 'PENDING' %}
+                <a href="{{ url_for('edit_bill', bill_id=bill.id) }}" class="btn-edit">Edit</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+        {% else %}
+            <p>No bills found for this customer.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>

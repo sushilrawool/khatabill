@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KhataBill | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+
+<div class="login-container">
+
+    <!-- LEFT SIDE INFO / ILLUSTRATION -->
+    <div class="login-info">
+        <h2 class="welcome-text">Welcome to KhataBill</h2>
+        <p>Manage your billing & customer records easily and securely.</p>
+        <img src="{{ url_for('static', filename='images/login-illustration.svg') }}" alt="Illustration" class="info-img">
+    </div>
+
+    <!-- LOGIN CARD -->
+    <div class="login-box {% if error %}shake{% endif %}" tabindex="0">
+
+        <!-- BRAND -->
+        <h1>KhataBill</h1>
+        <p>Digital billing system</p>
+
+        <!-- LOGO -->
+        <img src="{{ url_for('static', filename='images/icon-kb-dot.svg') }}"
+             class="illustration"
+             alt="KhataBill Logo">
+
+        <!-- FORM -->
+        <form method="POST" autocomplete="off">
+
+            <input type="text" name="username" placeholder="Username" required>
+
+            <div class="password-box">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="eye" onclick="togglePassword()">👁️</span>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p class="tagline">Manage billing & customer records simply</p>
+
+        <div class="feature-hints compact">
+            <span>Billing</span>
+            <span>Customer Ledger</span>
+            <span>Products</span>
+        </div>
+
+        {% if error %}
+            <span id="error" class="show">{{ error }}</span>
+        {% else %}
+            <span id="error"></span>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function togglePassword(){
+    const p = document.getElementById("password");
+    p.type = p.type === "password" ? "text" : "password";
+}
+</script>
+
+</body>
+</html>

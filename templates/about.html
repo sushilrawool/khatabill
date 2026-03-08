@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KhataBill | About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">
+            KhataBill
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('add_bill') }}">Add Bill</a>
+            <a href="{{ url_for('add_customer') }}">Add Customer</a>
+            <a href="{{ url_for('view_customers') }}">View Customers</a>
+            <a href="{{ url_for('products') }}">Products</a>
+            <a href="{{ url_for('pending_bills') }}">Pending Bills</a>
+            <a href="{{ url_for('reports') }}">Reports</a>
+            <a href="{{ url_for('about') }}" class="active">About Us</a>
+            <a href="{{ url_for('gallery') }}">Gallery</a>
+        </div>
+    </nav>
+
+    <!-- Hero Image -->
+    <div class="hero">
+        <img src="/static/images/banner.png" alt="KhataBill Banner">
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <!-- Introduction -->
+            <h1 class="fade-slide">About KhataBill</h1>
+            <p class="fade-slide delay-1">
+                <strong>KhataBill</strong> is a modern digital billing system designed specifically for small and medium businesses in India and worldwide.
+                It simplifies billing, customer management, and sales tracking while reducing human errors and saving valuable time.
+            </p>
+
+            <!-- Why KhataBill -->
+            <h2 class="fade-slide delay-2">Why KhataBill?</h2>
+            <p class="fade-slide delay-3">
+                Traditional billing using paper ledgers or spreadsheets can be inefficient and error-prone. KhataBill automates daily billing operations,
+                tracks customer accounts, and generates insightful reports.
+            </p>
+
+            <!-- Key Features -->
+            <h2 class="fade-slide delay-4">Key Features</h2>
+            <div class="features">
+                <div class="feature fade-slide delay-5">
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/person-lines-fill.svg" alt="Customer Icon" width="50" height="50">
+                    <p>Manage Customers Easily</p>
+                </div>
+                <div class="feature fade-slide delay-6">
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/file-text-fill.svg" alt="Bill Icon" width="50" height="50">
+                    <p>Create & Track Bills</p>
+                </div>
+                <div class="feature fade-slide delay-7">
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/graph-up.svg" alt="Report Icon" width="50" height="50">
+                    <p>Detailed Reports & Analytics</p>
+                </div>
+                <div class="feature fade-slide delay-8">
+                    <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/file-earmark-arrow-down-fill.svg" alt="Download Icon" width="50" height="50">
+                    <p>Export PDF & Excel</p>
+                </div>
+            </div>
+
+            <!-- How It Works -->
+            <h2 class="fade-slide delay-9">How It Works</h2>
+            <ol class="fade-slide delay-10">
+                <li>Add your customers and products into the system.</li>
+                <li>Create bills quickly with automatic totals, taxes, and discounts.</li>
+                <li>Monitor pending bills and mark them as paid.</li>
+                <li>Generate detailed reports to analyze sales, customer activity, and product performance.</li>
+                <li>Download reports in PDF or Excel for audits and accounting.</li>
+            </ol>
+
+            <!-- Benefits -->
+            <h2 class="fade-slide delay-11">Benefits</h2>
+            <ul class="fade-slide delay-12">
+                <li>Reduces errors in billing and accounts.</li>
+                <li>Saves time with automation and pre-calculation features.</li>
+                <li>Tracks customers’ payment history accurately.</li>
+                <li>Professional reporting for sales and performance analysis.</li>
+                <li>Easy to scale as your business grows.</li>
+            </ul>
+
+            <!-- Use Cases -->
+            <h2 class="fade-slide delay-13">Who Can Use KhataBill?</h2>
+            <p class="fade-slide delay-14">
+                KhataBill is ideal for retail shops, grocery stores, small enterprises, service providers, and any business requiring efficient billing and customer management.
+            </p>
+
+            <!-- Contact Us Card -->
+            <div class="contact-card fade-slide delay-15">
+                <h2>Contact Us</h2>
+                <p>For queries, support, or feedback, reach us using the contact details below:</p>
+                <ul>
+                    <li><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/envelope-fill.svg" alt="Email Icon" width="20" height="20"> <strong>Email:</strong> support@khatabill.com</li>
+                    <li><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/telephone-fill.svg" alt="Phone Icon" width="20" height="20"> <strong>Phone:</strong> +91 7821866264</li>
+                    <li><img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/geo-alt-fill.svg" alt="Address Icon" width="20" height="20"> <strong>Address:</strong> 123 Business Lane, Kolhapur, Maharashtra, India</li>
+                </ul>
+            </div>
+
+            <p class="footer-note fade-slide delay-16">
+                KhataBill – Simplifying billing, one transaction at a time.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Bill #{{ bill.id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_bill.css') }}">
+  
+</head>
+<body>
+    
+<nav class="navbar">
+    <div class="nav-left"><div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div></div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('add_bill') }}" class="{% if request.path == '/add_bill' %}active{% endif %}">Add Bill</a>
+        <a href="{{ url_for('add_customer') }}" class="{% if request.path == '/add_customer' %}active{% endif %}">Add Customer</a>
+        <a href="{{ url_for('view_customers') }}" class="{% if request.path == '/view_customers' %}active{% endif %}">View Customers</a>
+        <a href="{{ url_for('products') }}" class="{% if request.path == '/products' %}active{% endif %}">Products</a>
+        <a href="{{ url_for('pending_bills') }}" class="{% if request.path == '/pending_bills' %}active{% endif %}">Pending Bills</a>
+        <a href="{{ url_for('reports') }}" class="{% if request.path == '/reports' %}active{% endif %}">Reports</a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">About Us</a>
+        <a href="{{ url_for('gallery') }}" class="{% if request.path == '/gallery' %}active{% endif %}">Gallery</a>
+    </div>
+</nav>
+
+
+
+<div class="container">
+    <div class="card">
+        <h2>Bill #{{ bill.id }}</h2>
+        <p><strong>Customer:</strong> {{ bill.customer_name }}</p>
+        <p><strong>Status:</strong> {{ bill.status }}</p>
+         <p><strong>Date:</strong>{{ bill.created_at.strftime("%d-%m-%Y") }}</p>
+             <p><strong>Time</strong> {{ bill.created_at.strftime("%I:%M %p") }} </p>
+
+
+        <!-- ================= Flash Messages ================= -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+        <!-- Bill Items Table -->
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price (₹)</th>
+                    <th>Total (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ (item.quantity * item.price)|round(2) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Grand Total -->
+        <div class="total-box">
+            Grand Total: ₹ {{ bill.total_amount }}
+        </div>
+
+        <!-- Print & Download Buttons -->
+        <div style="margin-top:15px;">
+            <button class="btn-action" onclick="window.print()">🖨️ Print Bill</button>
+            <a class="btn-action" href="{{ url_for('download_bill', bill_id=bill.id) }}">⬇️ Download PDF</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

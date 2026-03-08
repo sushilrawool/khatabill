@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | Reports</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+<style>
+html {
+    scroll-behavior: smooth;
+}
+</style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-left"><div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div></div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+        <a href="{{ url_for('add_bill') }}" class="{% if request.path == '/add_bill' %}active{% endif %}">Add Bill</a>
+        <a href="{{ url_for('add_customer') }}" class="{% if request.path == '/add_customer' %}active{% endif %}">Add Customer</a>
+        <a href="{{ url_for('view_customers') }}" class="{% if request.path == '/view_customers' %}active{% endif %}">View Customers</a>
+        <a href="{{ url_for('products') }}" class="{% if request.path == '/products' %}active{% endif %}">Products</a>
+        <a href="{{ url_for('pending_bills') }}" class="{% if request.path == '/pending_bills' %}active{% endif %}">Pending Bills</a>
+        <a href="{{ url_for('reports') }}" class="{% if request.path == '/reports' %}active{% endif %}">Reports</a>
+        <a href="{{ url_for('about') }}" class="{% if request.path == '/about' %}active{% endif %}">About Us</a>
+        <a href="{{ url_for('gallery') }}" class="{% if request.path == '/gallery' %}active{% endif %}">Gallery</a>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- QUICK REPORT LINKS -->
+    <div class="card report-links">
+        <h3>All Reports</h3>
+        <div class="report-link-box">
+            <a href="{{ url_for('product_report') }}" class="report-link">
+                📦 Product Sales Report
+                <span>Product-wise quantity & total sales</span>
+            </a>
+
+            <a href="{{ url_for('customer_product_report') }}" class="report-link">
+                👤 Customer - Wise Product Report
+                <span>Which customer bought which products</span>
+            </a>
+
+            <!-- NEW LINK FOR GENERATE REPORTS -->
+            <a href="#generate-reports" class="report-link">
+                📝 Generate & Download Reports
+                <span>Download PDF / Excel for any customer/date range</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN REPORTS CARD -->
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ url_for('dashboard') }}" class="back-btn">← Back to Dashboard</a>
+            <h2>KhataBill Reports</h2>
+        </div>
+
+        <!-- FILTERS -->
+        <form method="get" action="{{ url_for('reports') }}" class="filters">
+            <label>Customer:</label>
+            <select name="customer_id">
+                <option value="">All Customers</option>
+                {% for customer in customers %}
+                <option value="{{ customer.id }}" {% if request.args.get('customer_id') == customer.id|string %}selected{% endif %}>
+                    {{ customer.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <label>From:</label>
+            <input type="date" name="from_date" value="{{ request.args.get('from_date','') }}">
+            <label>To:</label>
+            <input type="date" name="to_date" value="{{ request.args.get('to_date','') }}">
+
+            <button type="submit" class="btn">Apply</button>
+        </form>
+
+        <!-- SUMMARY -->
+        <div class="summary">
+            <p><strong>Total Customers:</strong> {{ total_customers }}</p>
+            <p><strong>Total Bills:</strong> {{ total_bills }}</p>
+            <p><strong>Total Sales:</strong> ₹ {{ total_sales }}</p>
+            <p><strong>Total Pending:</strong> ₹ {{ total_pending }}</p>
+            <p><strong>Total Collected:</strong> ₹ {{ total_collection }}</p>
+            <p><strong>Total Pending Bills:</strong> {{ total_pending_bills }}</p>
+            <p><strong>Total Collected Bills:</strong> {{ total_collected_bills }}</p>
+        </div>
+
+        <!-- BILL-WISE TABLE -->
+        <h3>Bill-wise Reports</h3>
+        <table class="reports-table" id="bills-table">
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount (₹)</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.id }}</td>
+                    <td>{{ bill.customer_name }}</td>
+                    <td>{{ bill.created_at }}</td>
+                    <td>{{ bill.total_amount }}</td>
+                    <td>{{ bill.status }}</td>
+                    <td><a href="{{ url_for('view_bill', bill_id=bill.id) }}">View</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CUSTOMER-WISE SUMMARY CARD -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Customer-wise Summary</h2>
+        </div>
+        <table class="reports-table" id="customer-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Total Bills</th>
+                    <th>Total Pending</th>
+                    <th>Total Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in customer_reports %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.total_bills }}</td>
+                    <td>₹ {{ c.total_pending }}</td>
+                    <td>₹ {{ c.total_paid }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- GENERATE & DOWNLOAD REPORTS -->
+    <div class="card" id="generate-reports">
+        <h3>Generate & Download Reports</h3>
+        <form method="get" action="{{ url_for('reports') }}" class="filters">
+            <label>Customer:</label>
+            <select name="customer_id">
+                <option value="">All Customers</option>
+                {% for customer in customers %}
+                <option value="{{ customer.id }}" {% if request.args.get('customer_id') == customer.id|string %}selected{% endif %}>
+                    {{ customer.name }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <label>From:</label>
+            <input type="date" name="from_date" value="{{ request.args.get('from_date','') }}">
+
+            <label>To:</label>
+            <input type="date" name="to_date" value="{{ request.args.get('to_date','') }}">
+
+            <button type="submit" class="btn">Apply</button>
+            <button type="submit" name="download" value="pdf" class="btn btn-outline">Download PDF</button>
+            <button type="submit" name="download" value="excel" class="btn btn-outline">Download Excel</button>
+        </form>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/report.js') }}"></script>
+</body>
+</html>

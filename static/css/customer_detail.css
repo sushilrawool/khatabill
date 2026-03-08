@@ -1,0 +1,419 @@
+/* =========================
+   GLOBAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f4f6f8, #fff7ef);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* =========================
+   NAVBAR (SAME AS ADD BILL)
+========================= */
+.navbar {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ee8206;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 14px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #7C2D12;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 4px 6px;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #ee8206;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    left: 0;
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: #ee8206;
+    transform: scale(1.05);
+}
+
+/* =========================
+   CONTAINER & CARD
+========================= */
+.container {
+    max-width: 1000px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: #fff;
+    padding: 26px;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   CARD HEADER
+========================= */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.card-header h2 {
+    font-size: 22px;
+    color: #ee8206;
+    font-weight: 600;
+}
+
+.back-btn {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ee8206;
+    transition: transform 0.3s ease;
+}
+
+.back-btn:hover {
+    transform: translateX(-4px);
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+.customer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background: #fff7ef;
+    color: #ee8206;
+    box-shadow: 0 4px 10px rgba(238,130,6,0.25);
+}
+
+.edit-btn:hover {
+    background: #ffedd5;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.delete-btn:hover {
+    background: #fecaca;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   EDIT CUSTOMER FORM
+========================= */
+.form-group {
+    margin-bottom: 20px;
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.form-group form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.form-group input {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #ee8206;
+    box-shadow: 0 4px 12px rgba(238,130,6,0.25);
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus {
+    box-shadow: 0 2px 8px rgba(238,130,6,0.35);
+}
+
+.btn {
+    background: linear-gradient(135deg, #ee8206, #ff9a3c);
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 12px rgba(238,130,6,0.35);
+}
+
+.btn.cancel {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn.cancel:hover {
+    background: #d1d5db;
+}
+
+/* =========================
+   CUSTOMER BILLS TABLE
+========================= */
+.customer-bills {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.customer-bills th,
+.customer-bills td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.customer-bills th {
+    background: #f7f7f7;
+    color: #444;
+    font-weight: 500;
+}
+
+.customer-bills tbody tr {
+    transition: all 0.3s ease;
+}
+
+.customer-bills tbody tr:hover {
+    background: #fff7ef;
+}
+
+/* =========================
+   STATUS
+========================= */
+.status {
+    font-weight: 600;
+}
+
+.status.pending {
+    color: #d97706;
+}
+
+.status.paid {
+    color: #16a34a;
+}
+
+/* =========================
+   BILL ACTION BUTTON
+========================= */
+.btn-edit {
+    text-decoration: none;
+    padding: 6px 12px;
+    background: #ee8206;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+    background: #ff9a3c;
+    transform: scale(1.05);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .form-group form {
+        flex-direction: column;
+    }
+
+    .card-header {
+        align-items: flex-start;
+    }
+}
+
+
+/* =========================
+   KHATABILL LOGO STYLING
+========================= */
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #F97316;           /* KhataBill primary color */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Logo icon */
+.nav-logo .logo {
+    width: 40px;
+    height: 40px;
+    padding: 6px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Hover animation */
+.nav-logo:hover .logo {
+    transform: rotate(-8deg) scale(1.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background:#f5f6fa;
+    margin:0;
+}
+
+/* container */
+.container{
+    width:90%;
+    margin:40px auto;
+}
+
+/* card */
+.card{
+    background:#fff;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* header */
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.card-header h2{
+    margin:0;
+    color:#f57c00;
+}
+
+
+
+/* table */
+.customer-bills{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.customer-bills th{
+    background:#f3f3f3;
+    padding:14px;
+    text-align:center;
+    font-weight:600;
+}
+
+.customer-bills td{
+    padding:14px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+.customer-bills tr:hover{
+    background:#fafafa;
+}
+
+/* status colors */
+.status.pending{
+    color:#ff9800;
+    font-weight:600;
+}
+
+.status.paid{
+    color:#2e7d32;
+    font-weight:600;
+}
+
+html{
+    scroll-behavior: smooth;
+}
