@@ -18,16 +18,25 @@ from datetime import datetime
 import os
 from fpdf import FPDF
 
+import os
+import pdfkit
+
 
 
 
 def init_unicode_pdf():
     pdf = FPDF()
     pdf.add_page()
+    font_path = os.path.join(os.getcwd(), 'fonts', 'segoeui.ttf')
+    pdf.add_font("Segoe", "", font_path, uni=True)
+    pdf.add_font("Segoe", "B", font_path, uni=True)
+    pdf.set_font("Segoe", "", 10)
+    return pdf
 
     # Windows system font path (NO DOWNLOAD)
-    font_path = r"C:\Windows\Fonts\segoeui.ttf"
-
+    font_path = os.path.join(os.getcwd(), 'fonts', 'segoeui.ttf')
+    pdf.add_font("Segoe", "", font_path, uni=True)
+    
     pdf.add_font("Segoe", "", font_path, uni=True)
     pdf.add_font("Segoe", "B", font_path, uni=True)
     pdf.set_font("Segoe", "", 10)
@@ -36,6 +45,8 @@ def init_unicode_pdf():
 
 app = Flask(__name__)
 app.secret_key = "khatabill_secret_key"
+import os
+app.secret_key = os.environ.get("SECRET_KEY", "fallback_secret_key")
 
 @app.template_filter('datetimeformat')
 def datetimeformat(value, format="%d-%m-%Y %H:%M"):
@@ -75,15 +86,16 @@ def add_no_cache_headers(response):
     return response
 
 # ---------------- DB CONNECTION ----------------
-# ---------------- DB CONNECTION ----------------
 def get_db_connection():
     import os
+    import mysql.connector
     return mysql.connector.connect(
-        host=os.environ.get("DB_HOST"),
-        user=os.environ.get("DB_USER"),
-        password=os.environ.get("DB_PASSWORD"),
-        database=os.environ.get("DB_NAME")
+        host=os.environ['DB_HOST'],
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASS'],
+        database=os.environ['DB_NAME']
     )
+
 
 def db_fetch(query, params=None):
     conn = get_db_connection()
@@ -535,7 +547,8 @@ def download_bill(bill_id):
     conn.close()
 
     rendered = render_template('bill_pdf.html', bill=bill, items=items)
-    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    WKHTML_PATH = os.environ.get('WKHTMLTOPDF_PATH', '/usr/local/bin/wkhtmltopdf')
+    config = pdfkit.configuration(wkhtmltopdf=WKHTML_PATH)
     options = {'enable-local-file-access': None}
     pdf = pdfkit.from_string(rendered, False, configuration=config, options=options)
 
@@ -913,9 +926,7 @@ def gallery():
 
 # ---------------- RUN SERVER ----------------
 if __name__ == "__main__":
-    import os
-
-    port = int(os.environ.get("PORT", 5000))  # Railway provides PORT automatically
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
 
