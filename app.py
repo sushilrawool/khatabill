@@ -75,14 +75,15 @@ def add_no_cache_headers(response):
     return response
 
 # ---------------- DB CONNECTION ----------------
+# ---------------- DB CONNECTION ----------------
 def get_db_connection():
+    import os
     return mysql.connector.connect(
-        host="localhost",
-        user="khatabill_user",
-        password="khatabill_pass",
-        database="khatabill"
+        host=os.environ.get("DB_HOST"),
+        user=os.environ.get("DB_USER"),
+        password=os.environ.get("DB_PASSWORD"),
+        database=os.environ.get("DB_NAME")
     )
-
 
 def db_fetch(query, params=None):
     conn = get_db_connection()
@@ -912,6 +913,9 @@ def gallery():
 
 # ---------------- RUN SERVER ----------------
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    import os
+
+    port = int(os.environ.get("PORT", 5000))  # Railway provides PORT automatically
+    app.run(host="0.0.0.0", port=port)
 
 
