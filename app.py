@@ -87,13 +87,11 @@ def add_no_cache_headers(response):
 
 # ---------------- DB CONNECTION ----------------
 def get_db_connection():
-    import os
-    import mysql.connector
     return mysql.connector.connect(
-        host=os.environ['DB_HOST'],
-        user=os.environ['DB_USER'],
-        password=os.environ['DB_PASS'],
-        database=os.environ['DB_NAME']
+        host=os.environ.get("DB_HOST", "localhost"),
+        user=os.environ.get("DB_USER", "root"),
+        password=os.environ.get("DB_PASS", "2003"),
+        database=os.environ.get("DB_NAME", "khatabill")
     )
 
 
@@ -590,11 +588,17 @@ def mark_paid(bill_id):
     conn.close()
     return redirect(url_for('pending_bills'))
 
-# ---------------- REPORTS ----------------
-# ---------------- REPORTS ----------------
-# ---------------- REPORTS ----------------
+# ---------------- REPORTS PAGE ----------------
 @app.route('/reports', methods=['GET'])
 def reports():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    return render_template("reports.html")
+
+# ---------------- BILL REPORT ----------------
+@app.route('/bill_report', methods=['GET'])
+def bill_report():
     if 'user' not in session:
         return redirect(url_for('login'))
 
@@ -656,7 +660,10 @@ def reports():
     # ----------- EXCEL DOWNLOAD -----------
     if download == 'excel':
         df = pd.DataFrame(bills)
-        df = df[['id', 'customer_name', 'created_at', 'total_amount', 'status']]
+        if not bills:
+             df = pd.DataFrame(columns=['id', 'customer_name', 'created_at', 'total_amount', 'status'])
+        else:
+             df = df[['id', 'customer_name', 'created_at', 'total_amount', 'status']]
         df.columns = ['Bill ID', 'Customer', 'Date', 'Amount', 'Status']
 
         output = BytesIO()
@@ -665,27 +672,18 @@ def reports():
 
         return send_file(
             output,
-            download_name="khatabill_report.xlsx",
+            download_name="bill_report.xlsx",
             as_attachment=True
         )
 
     # ----------- PDF DOWNLOAD -----------
     if download == 'pdf':
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", "B", 16)
-        pdf.cell(0, 10, "KhataBill Sales Report", ln=True, align="C")
+        pdf = init_unicode_pdf()
+        pdf.set_font("Segoe", "B", 16)
+        pdf.cell(0, 10, "Bill Report", ln=True, align="C")
         pdf.ln(8)
 
-        pdf.set_font("Arial", "", 12)
-        pdf.cell(0, 8, f"Total Customers : {total_customers}", ln=True)
-        pdf.cell(0, 8, f"Total Bills : {total_bills}", ln=True)
-        pdf.cell(0, 8, f"Total Sales : Rs. {total_sales}", ln=True)
-        pdf.cell(0, 8, f"Collected : Rs. {total_collection}", ln=True)
-        pdf.cell(0, 8, f"Pending : Rs. {total_pending}", ln=True)
-        pdf.ln(6)
-
-        pdf.set_font("Arial", "B", 11)
+        pdf.set_font("Segoe", "B", 11)
         headers = ["ID", "Customer", "Date", "Amount", "Status"]
         widths = [15, 45, 30, 30, 30]
 
@@ -693,19 +691,18 @@ def reports():
             pdf.cell(widths[i], 8, headers[i], 1)
         pdf.ln()
 
-        pdf.set_font("Arial", "", 11)
+        pdf.set_font("Segoe", "", 11)
         for b in bills:
             pdf.cell(15, 8, str(b['id']), 1)
-            pdf.cell(45, 8, b['customer_name'], 1)
+            pdf.cell(45, 8, str(b['customer_name']), 1)
             pdf.cell(30, 8, b['created_at'].strftime('%Y-%m-%d'), 1)
-            pdf.cell(30, 8, str(b['total_amount']), 1)
-            pdf.cell(30, 8, b['status'], 1)
+            pdf.cell(30, 8, f"₹ {b['total_amount']}", 1)
+            pdf.cell(30, 8, str(b['status']), 1)
             pdf.ln()
 
-        pdf_bytes = bytes(pdf.output(dest='S'))
         return send_file(
-            BytesIO(pdf_bytes),
-            download_name="khatabill_report.pdf",
+            BytesIO(pdf.output(dest='S')),
+            download_name="bill_report.pdf",
             as_attachment=True,
             mimetype='application/pdf'
         )
@@ -714,16 +711,273 @@ def reports():
     customers = db_fetch("SELECT id, name FROM customers ORDER BY name")
 
     return render_template(
-        "reports.html",
+        "bill_report.html",
         bills=bills,
-        customers=customers,
-        customer_reports=customer_reports,
-        total_customers=total_customers,
-        total_bills=total_bills,
-        total_sales=total_sales,
-        total_pending=total_pending,
-        total_collection=total_collection
-    )  
+        customers=customers
+    )
+
+# ---------------- CUSTOMER REPORT ----------------
+@app.route('/customer_report', methods=['GET'])
+def customer_report():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    download = request.args.get('download')
+    
+    query = """
+        SELECT c.id, c.name, c.phone, c.email, c.address, 
+               IFNULL(SUM(CASE WHEN b.status='PENDING' THEN b.total_amount ELSE 0 END), 0) AS pending_amount,
+               IFNULL(SUM(CASE WHEN b.status='PAID' THEN b.total_amount ELSE 0 END), 0) AS paid_amount
+        FROM customers c
+        LEFT JOIN bills b ON c.id = b.customer_id
+        GROUP BY c.id
+        ORDER BY c.name
+    """
+    customers = db_fetch(query)
+
+    if download == 'excel':
+        df = pd.DataFrame(customers)
+        df.columns = ['ID', 'Name', 'Phone', 'Email', 'Address', 'Pending Amount', 'Paid Amount']
+        output = BytesIO()
+        df.to_excel(output, index=False)
+        output.seek(0)
+        return send_file(output, download_name="customer_report.xlsx", as_attachment=True)
+
+    if download == 'pdf':
+        pdf = init_unicode_pdf()
+        pdf.set_font("Segoe", "B", 16)
+        pdf.cell(0, 10, "Customer Report", ln=True, align="C")
+        pdf.ln(8)
+
+        headers = ["ID", "Name", "Phone", "Pending", "Paid"]
+        widths = [15, 50, 30, 25, 25]
+
+        pdf.set_font("Segoe", "B", 10)
+        for i in range(len(headers)):
+            pdf.cell(widths[i], 8, headers[i], 1)
+        pdf.ln()
+
+        pdf.set_font("Segoe", "", 10)
+        for c in customers:
+            pdf.cell(15, 8, str(c['id']), 1)
+            pdf.cell(50, 8, str(c['name']), 1)
+            pdf.cell(30, 8, str(c['phone']), 1)
+            pdf.cell(25, 8, f"₹ {c['pending_amount']}", 1)
+            pdf.cell(25, 8, f"₹ {c['paid_amount']}", 1)
+            pdf.ln()
+
+        return send_file(BytesIO(pdf.output(dest='S')), download_name="customer_report.pdf", as_attachment=True, mimetype='application/pdf')
+
+    return render_template("customer_report.html", customers=customers)
+
+# ---------------- PENDING BILLS REPORT ----------------
+@app.route('/pending_bills_report', methods=['GET'])
+def pending_bills_report():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    download = request.args.get('download')
+    
+    query = """
+        SELECT b.id, c.name AS customer_name, b.created_at, b.total_amount
+        FROM bills b
+        JOIN customers c ON b.customer_id = c.id
+        WHERE b.status = 'PENDING'
+        ORDER BY b.created_at DESC
+    """
+    bills = db_fetch(query)
+
+    total_pending = sum(b['total_amount'] for b in bills)
+
+    if download == 'excel':
+        df = pd.DataFrame(bills)
+        if not bills:
+             df = pd.DataFrame(columns=['id', 'customer_name', 'created_at', 'total_amount'])
+        df.columns = ['Bill ID', 'Customer', 'Date', 'Amount']
+        output = BytesIO()
+        df.to_excel(output, index=False)
+        output.seek(0)
+        return send_file(output, download_name="pending_bills_report.xlsx", as_attachment=True)
+
+    if download == 'pdf':
+        pdf = init_unicode_pdf()
+        pdf.set_font("Segoe", "B", 16)
+        pdf.cell(0, 10, "Pending Bills Report", ln=True, align="C")
+        pdf.ln(5)
+        pdf.set_font("Segoe", "", 11)
+        pdf.cell(0, 8, f"Total Pending Amount: ₹ {total_pending}", ln=True)
+        pdf.ln(5)
+
+        headers = ["Bill ID", "Customer", "Date", "Amount"]
+        widths = [20, 60, 40, 30]
+
+        pdf.set_font("Segoe", "B", 11)
+        for i in range(len(headers)):
+            pdf.cell(widths[i], 8, headers[i], 1)
+        pdf.ln()
+
+        pdf.set_font("Segoe", "", 11)
+        for b in bills:
+            pdf.cell(20, 8, str(b['id']), 1)
+            pdf.cell(60, 8, str(b['customer_name']), 1)
+            pdf.cell(40, 8, b['created_at'].strftime('%Y-%m-%d'), 1)
+            pdf.cell(30, 8, f"₹ {b['total_amount']}", 1)
+            pdf.ln()
+
+        return send_file(BytesIO(pdf.output(dest='S')), download_name="pending_bills_report.pdf", as_attachment=True, mimetype='application/pdf')
+
+    return render_template("pending_bills_report.html", bills=bills, total_pending=total_pending)
+
+# ---------------- PAYMENT REPORT ----------------
+@app.route('/payment_report', methods=['GET'])
+def payment_report():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    download = request.args.get('download')
+    from_date = request.args.get('from_date')
+    to_date = request.args.get('to_date')
+
+    query = """
+        SELECT b.id, c.name AS customer_name, b.created_at, b.total_amount
+        FROM bills b
+        JOIN customers c ON b.customer_id = c.id
+        WHERE b.status = 'PAID'
+    """
+    params = []
+    if from_date:
+        query += " AND DATE(b.created_at) >= %s"
+        params.append(from_date)
+    if to_date:
+        query += " AND DATE(b.created_at) <= %s"
+        params.append(to_date)
+        
+    query += " ORDER BY b.created_at DESC"
+    bills = db_fetch(query, params)
+
+    total_paid = sum(b['total_amount'] for b in bills)
+
+    if download == 'excel':
+        df = pd.DataFrame(bills)
+        if not bills:
+             df = pd.DataFrame(columns=['id', 'customer_name', 'created_at', 'total_amount'])
+        df.columns = ['Bill ID', 'Customer', 'Date', 'Amount']
+        output = BytesIO()
+        df.to_excel(output, index=False)
+        output.seek(0)
+        return send_file(output, download_name="payment_report.xlsx", as_attachment=True)
+
+    if download == 'pdf':
+        pdf = init_unicode_pdf()
+        pdf.set_font("Segoe", "B", 16)
+        pdf.cell(0, 10, "Payment Report", ln=True, align="C")
+        pdf.ln(5)
+        pdf.set_font("Segoe", "", 11)
+        pdf.cell(0, 8, f"Total Payments: ₹ {total_paid}", ln=True)
+        pdf.ln(5)
+
+        headers = ["Bill ID", "Customer", "Date", "Amount"]
+        widths = [20, 60, 40, 30]
+
+        pdf.set_font("Segoe", "B", 11)
+        for i in range(len(headers)):
+            pdf.cell(widths[i], 8, headers[i], 1)
+        pdf.ln()
+
+        pdf.set_font("Segoe", "", 11)
+        for b in bills:
+            pdf.cell(20, 8, str(b['id']), 1)
+            pdf.cell(60, 8, str(b['customer_name']), 1)
+            pdf.cell(40, 8, b['created_at'].strftime('%Y-%m-%d'), 1)
+            pdf.cell(30, 8, f"₹ {b['total_amount']}", 1)
+            pdf.ln()
+
+        return send_file(BytesIO(pdf.output(dest='S')), download_name="payment_report.pdf", as_attachment=True, mimetype='application/pdf')
+
+    return render_template("payment_report.html", bills=bills, total_paid=total_paid)
+
+# ---------------- SALES REPORT ----------------
+@app.route('/sales_report', methods=['GET'])
+def sales_report():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+
+    download = request.args.get('download')
+    from_date = request.args.get('from_date')
+    to_date = request.args.get('to_date')
+
+    # Aggregate sales by date
+    query = """
+        SELECT DATE(created_at) AS sale_date,
+               COUNT(*) AS total_bills,
+               SUM(CASE WHEN status='PAID' THEN total_amount ELSE 0 END) AS collected,
+               SUM(CASE WHEN status='PENDING' THEN total_amount ELSE 0 END) AS pending,
+               SUM(total_amount) AS total_sales
+        FROM bills
+        WHERE 1=1
+    """
+    params = []
+    if from_date:
+        query += " AND DATE(created_at) >= %s"
+        params.append(from_date)
+    if to_date:
+        query += " AND DATE(created_at) <= %s"
+        params.append(to_date)
+        
+    query += " GROUP BY DATE(created_at) ORDER BY sale_date DESC"
+    sales = db_fetch(query, params)
+    
+    grand_total = sum(s['total_sales'] for s in sales)
+    grand_collected = sum(s['collected'] for s in sales)
+    grand_pending = sum(s['pending'] for s in sales)
+
+    if download == 'excel':
+        df = pd.DataFrame(sales)
+        if not sales:
+             df = pd.DataFrame(columns=['sale_date', 'total_bills', 'collected', 'pending', 'total_sales'])
+        df.columns = ['Date', 'Total Bills', 'Collected (₹)', 'Pending (₹)', 'Total Sales (₹)']
+        output = BytesIO()
+        df.to_excel(output, index=False)
+        output.seek(0)
+        return send_file(output, download_name="sales_report.xlsx", as_attachment=True)
+
+    if download == 'pdf':
+        pdf = init_unicode_pdf()
+        pdf.set_font("Segoe", "B", 16)
+        pdf.cell(0, 10, "Sales Report", ln=True, align="C")
+        pdf.ln(5)
+        pdf.set_font("Segoe", "", 11)
+        pdf.cell(0, 8, f"Total Sales: ₹ {grand_total}", ln=True)
+        pdf.cell(0, 8, f"Total Collected: ₹ {grand_collected}", ln=True)
+        pdf.cell(0, 8, f"Total Pending: ₹ {grand_pending}", ln=True)
+        pdf.ln(5)
+
+        headers = ["Date", "Bills", "Collected", "Pending", "Total Sales"]
+        widths = [35, 20, 30, 30, 35]
+
+        pdf.set_font("Segoe", "B", 11)
+        for i in range(len(headers)):
+            pdf.cell(widths[i], 8, headers[i], 1)
+        pdf.ln()
+
+        pdf.set_font("Segoe", "", 11)
+        for s in sales:
+            pdf.cell(35, 8, str(s['sale_date']), 1)
+            pdf.cell(20, 8, str(s['total_bills']), 1)
+            pdf.cell(30, 8, f"₹ {s['collected']}", 1)
+            pdf.cell(30, 8, f"₹ {s['pending']}", 1)
+            pdf.cell(35, 8, f"₹ {s['total_sales']}", 1)
+            pdf.ln()
+
+        return send_file(BytesIO(pdf.output(dest='S')), download_name="sales_report.pdf", as_attachment=True, mimetype='application/pdf')
+
+    return render_template(
+        "sales_report.html", 
+        sales=sales,
+        grand_total=grand_total,
+        grand_collected=grand_collected,
+        grand_pending=grand_pending
+    )
 
 
 
@@ -927,6 +1181,6 @@ def gallery():
 # ---------------- RUN SERVER ----------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 

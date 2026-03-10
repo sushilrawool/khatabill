@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | Payment Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div>
+    </div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('reports') }}">Reports</a>
+        <a href="{{ url_for('payment_report') }}" class="active">Payment Report</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ url_for('reports') }}" class="back-btn">← Back</a>
+            <h2>Payment Report</h2>
+        </div>
+
+        <div class="filters-card card" style="margin-top:20px;">
+            <h3>Generate & Download Report</h3>
+            <form method="get" action="{{ url_for('payment_report') }}" class="filters">
+                <label>From:</label>
+                <input type="date" name="from_date" value="{{ request.args.get('from_date','') }}">
+                <label>To:</label>
+                <input type="date" name="to_date" value="{{ request.args.get('to_date','') }}">
+
+                <button type="submit" class="btn">Apply</button>
+                <button type="submit" name="download" value="pdf" class="btn btn-outline">Download PDF</button>
+                <button type="submit" name="download" value="excel" class="btn btn-outline">Download Excel</button>
+            </form>
+        </div>
+
+        <div class="summary">
+            <p><strong>Total Payments Collected:</strong> ₹ {{ total_paid }}</p>
+        </div>
+
+        <table class="reports-table">
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.id }}</td>
+                    <td>{{ bill.customer_name }}</td>
+                    <td>{{ bill.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ bill.total_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

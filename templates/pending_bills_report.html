@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KhataBill | Pending Bills Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/report.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-left">
+        <div class="nav-logo"> <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/icons/receipt.svg" alt="KhataBill Logo" class="logo" style="width:40px;height:40px;">KhataBill</div>
+    </div>
+    <div class="nav-right">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('reports') }}">Reports</a>
+        <a href="{{ url_for('pending_bills_report') }}" class="active">Pending Bills Report</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <a href="{{ url_for('reports') }}" class="back-btn">← Back</a>
+            <h2>Pending Bills Report</h2>
+        </div>
+
+        <div class="filters-card card" style="margin-top:20px;">
+            <h3>Generate & Download Report</h3>
+            <form method="get" action="{{ url_for('pending_bills_report') }}" class="filters">
+                <button type="submit" name="download" value="pdf" class="btn btn-outline">Download PDF</button>
+                <button type="submit" name="download" value="excel" class="btn btn-outline">Download Excel</button>
+            </form>
+        </div>
+
+        <div class="summary">
+            <p><strong>Total Pending Amount:</strong> ₹ {{ total_pending }}</p>
+        </div>
+
+        <table class="reports-table">
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>{{ bill.id }}</td>
+                    <td>{{ bill.customer_name }}</td>
+                    <td>{{ bill.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ bill.total_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
