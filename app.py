@@ -89,25 +89,23 @@ def add_no_cache_headers(response):
 import mysql.connector
 import os
 
+import mysql.connector
+import os
+
 def get_db_connection():
     try:
         conn = mysql.connector.connect(
-            host=os.environ.get("MYSQLHOST", "localhost"),
-            user=os.environ.get("MYSQLUSER", "root"),
-            password=os.environ.get("MYSQLPASSWORD", "2003"),
-            database=os.environ.get("MYSQLDATABASE", "khatabill"),
+            host=os.environ.get("MYSQLHOST"),
+            user=os.environ.get("MYSQLUSER"),
+            password=os.environ.get("MYSQLPASSWORD"),
+            database=os.environ.get("MYSQLDATABASE"),
             port=int(os.environ.get("MYSQLPORT", 3306))
         )
         return conn
     except mysql.connector.Error as err:
-        # Print detailed error for debugging
-        print(f"[DB CONNECTION ERROR] {err}")
-        # Optionally, raise a more user-friendly exception
-        raise Exception("Database connection failed. Check credentials and DB server.") from err
-        return conn
-    except mysql.connector.Error as e:
-        print("Database connection error:", e)
-        return None
+        # Print the error to console/logs
+        print("Database connection failed:", err)
+        raise
 
 def db_fetch(query, params=None):
     conn = get_db_connection()
