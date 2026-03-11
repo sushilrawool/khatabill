@@ -96,6 +96,7 @@ def get_db_connection():
     try:
         conn = mysql.connector.connect(
             host=os.environ.get("MYSQLHOST"),
+<<<<<<< HEAD
             user=os.environ.get("MYSQLUSER"),
             password=os.environ.get("MYSQLPASSWORD"),
             database=os.environ.get("MYSQLDATABASE"),
@@ -107,6 +108,21 @@ def get_db_connection():
         print("Database connection failed:", err)
         raise
 
+=======
+            user=os.environ.get("MYSQL_USER"),
+            password=os.environ.get("MYSQL_PASSWORD"),
+            database=os.environ.get("MYSQL_DATABASE"),
+            port=int(os.environ.get("MYSQL_PORT", 3306))
+        )
+        return conn
+    except mysql.connector.Error as err:
+        print(f"[DB CONNECTION ERROR] {err}")
+        return None
+        return conn
+    except mysql.connector.Error as err:
+        print(f"[DB CONNECTION ERROR] {err}")
+        return None  # Don't crash Flask, return None
+>>>>>>> 09d2c6b (Initial commit)
 def db_fetch(query, params=None):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
