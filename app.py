@@ -86,14 +86,28 @@ def add_no_cache_headers(response):
     return response
 
 # ---------------- DB CONNECTION ----------------
-def get_db_connection():
-    return mysql.connector.connect(
-        host=os.environ.get("DB_HOST", "localhost"),
-        user=os.environ.get("DB_USER", "root"),
-        password=os.environ.get("DB_PASS", "2003"),
-        database=os.environ.get("DB_NAME", "khatabill")
-    )
+import mysql.connector
+import os
 
+def get_db_connection():
+    try:
+        conn = mysql.connector.connect(
+            host=os.environ.get("MYSQLHOST", "localhost"),
+            user=os.environ.get("MYSQLUSER", "root"),
+            password=os.environ.get("MYSQLPASSWORD", "2003"),
+            database=os.environ.get("MYSQLDATABASE", "khatabill"),
+            port=int(os.environ.get("MYSQLPORT", 3306))
+        )
+        return conn
+    except mysql.connector.Error as err:
+        # Print detailed error for debugging
+        print(f"[DB CONNECTION ERROR] {err}")
+        # Optionally, raise a more user-friendly exception
+        raise Exception("Database connection failed. Check credentials and DB server.") from err
+        return conn
+    except mysql.connector.Error as e:
+        print("Database connection error:", e)
+        return None
 
 def db_fetch(query, params=None):
     conn = get_db_connection()
@@ -1180,7 +1194,6 @@ def gallery():
 
 # ---------------- RUN SERVER ----------------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 
